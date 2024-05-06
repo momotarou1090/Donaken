@@ -6,4 +6,6 @@ Rails.application.routes.draw do
 
   # "/charge" へのPOSTリクエストをPaymentsControllerのchargeアクションにルーティングする
   post 'charge', to: 'payments#charge'
+
+  post 'tokens/create'
 end
