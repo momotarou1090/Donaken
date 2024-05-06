@@ -1,3 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # 既存のルート
+  get 'payments/new'
+  get 'payments/success', as: 'success'
+  get 'payments/failure', as: 'failure'
+
+  # "/charge" へのPOSTリクエストをPaymentsControllerのchargeアクションにルーティングする
+  post 'charge', to: 'payments#charge'
 end

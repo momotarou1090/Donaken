@@ -1,0 +1,11 @@
+<%= form_tag('/charge', method: :post) do %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>"
+          data-amount="500"  <!-- 金額をセント単位で指定 (500円) -->
+          data-name="Demo Product"
+          data-description="A product well worth your 500 yen"
+          data-image="https://example.com/icon.png"  <!-- 任意: チェックアウトで表示される画像のURL -->
+          data-locale="auto"
+          data-currency="jpy"></script>
+<% end %>
