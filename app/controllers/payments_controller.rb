@@ -15,14 +15,34 @@ class PaymentsController < ApplicationController
         description: 'Example charge',
         source: params[:stripeToken]  # Stripeのトークン
       })
-
-      flash[:success] = "Thank you for your payment!"
-      redirect_to success_path
+      if charge.paid
+        flash[:success] = "Thank you for your payment!"
+        transfer_tokens
+        redirect_to success_path
+      else
+        flash[:error] = "Payment failed"
+        redirect_to failure_path
+      end
     rescue Stripe::CardError => e
       flash[:error] = e.message
       redirect_to failure_path
     end
   end
+  private
+
+  def transfer_tokens
+    # トークン送金ロジック
+    # Truffleコマンドを実行
+    command = "truffle exec ./scripts/transfer.js --network amoy"
+    stdout, stderr, status = Open3.capture3(command)
+
+    if status.success?
+      Rails.logger.info "Transfer successful: #{stdout}"
+    else
+      Rails.logger.error "Transfer failed: #{stderr}"
+    end
+  end
+
 
   def success
     # 支払い成功時に表示するビュー
